@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#7026FB"/>
+<meta name="description" content="MANGENESIS — AI/ML and space-technology control platform for identifying manganese reserves and pre-empting production shortfalls across MOIL Limited's mines."/>
+<title>MANGENESIS Control Platform</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link rel="stylesheet" href="/static/css/mangenesis.css"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237026FB'/%3E%3Ctext x='16' y='23' font-family='system-ui' font-size='19' font-weight='800' fill='white' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E"/>
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"></div>
+
+<div class="shell">
+
+  <!-- ============ RAIL ============ -->
+  <aside class="rail" id="rail">
+    <div class="rail__brand">
+      <span class="mark" aria-hidden="true">G</span>
+      <div>
+        <div class="rail__name">GeoMn AI</div>
+        <div class="rail__org">MOIL Limited · Ministry of Steel</div>
+      </div>
+    </div>
+
+    <nav class="rail__scroll" id="rail-nav" aria-label="Platform sections"></nav>
+
+    <div class="rail__foot">
+      <div class="telemetry-chip">
+        <span class="dot dot--pulse" style="color:var(--good)"></span>
+        <span style="flex:1;min-width:0">
+          <span class="telemetry-chip__t">Space Telemetry</span>
+          <span class="telemetry-chip__s" id="tele-sub">Sentinel-2 · 10 m archive</span>
+        </span>
+        <span class="tag tag--plain" id="tele-state">Idle</span>
+      </div>
+    </div>
+  </aside>
+
+  <div class="scrim" id="scrim" hidden></div>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+    <div class="topbar">
+      <button class="iconbtn railtoggle" id="menu-btn" aria-label="Open navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+
+      <!-- Ore-site selector -->
+      <div class="selector">
+        <button class="selector__btn" id="site-btn" aria-expanded="false" aria-haspopup="listbox">
+          <span class="selector__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 10h.01M15 10h.01"/></svg>
+          </span>
+          <span class="selector__txt">
+            <span class="selector__lead" id="site-lead">Loading…</span>
+            <span class="selector__sub" id="site-sub">Ore site register</span>
+          </span>
+          <svg class="selector__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+
+        <div class="pop" id="site-pop" role="listbox" aria-label="Select ore site">
+          <div class="pop__head">
+            <input class="pop__search" id="site-q" type="search" placeholder="Search locality, belt or state…" aria-label="Search ore sites"/>
+            <div class="pop__filters">
+              <button class="chipbtn is-on" data-filter="all" type="button">All sites</button>
+              <button class="chipbtn" data-filter="operating" type="button">Operating mines</button>
+              <button class="chipbtn" data-filter="exploration" type="button">Exploration</button>
+              <button class="chipbtn" data-filter="occurrence" type="button">Occurrences</button>
+            </div>
+          </div>
+          <div class="pop__body" id="site-pop-body"></div>
+        </div>
+      </div>
+
+      <!-- Scenario selector -->
+      <div class="selector">
+        <button class="selector__btn" id="sc-btn" aria-expanded="false" aria-haspopup="listbox">
+          <span class="selector__icon" aria-hidden="true" style="background:var(--crit-bg);color:var(--crit)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+          </span>
+          <span class="selector__txt">
+            <span class="selector__lead" id="sc-lead">Scenario</span>
+            <span class="selector__sub" id="sc-sub">—</span>
+          </span>
+          <span class="tag" id="sc-risk">—</span>
+          <svg class="selector__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+
+        <div class="pop" id="sc-pop" role="listbox" aria-label="Select operating scenario">
+          <div class="pop__head">
+            <span class="tiny muted">Every model on the platform re-computes when the scenario changes.</span>
+          </div>
+          <div class="pop__body" id="sc-pop-body"></div>
+        </div>
+      </div>
+
+      <span class="topbar__spacer"></span>
+
+      <span class="pill pill--mono" id="clock" aria-label="Local time">--:--:--</span>
+      <a class="btn btn--primary" id="report-link" href="/api/report/brief.pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Download report
+      </a>
+      <button class="iconbtn" id="alert-btn" aria-label="Open alert centre">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="iconbtn__count" id="alert-count">0</span>
+      </button>
+      <button class="iconbtn" id="theme-btn" aria-label="Switch theme"></button>
+    </div>
+
+    <div class="view" id="view">
+      <div class="empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16v16H4zM9 9h6v6H9z"/></svg>
+        <p>Initialising the control platform…</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

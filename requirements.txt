@@ -1,0 +1,20 @@
+# --- Core platform (required) ---------------------------------------------
+fastapi==0.115.0
+uvicorn[standard]==0.30.1
+sqlmodel==0.0.22
+aiosqlite==0.20.0
+numpy==1.26.4
+
+# --- Reporting (required for the downloadable PDF brief) ------------------
+reportlab==4.2.2
+
+# --- Live telemetry simulation & legacy ML stack (optional) ---------------
+# The platform boots and every analytics/report endpoint works without
+# these; only the 1 Hz fleet/weather/equipment simulation is skipped.
+scipy==1.13.0
+pandas==2.2.2
+scikit-learn==1.5.0
+lightgbm==4.3.0
+xgboost==2.0.3
+pillow==10.3.0
+matplotlib==3.8.4
