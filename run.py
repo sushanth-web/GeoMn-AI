@@ -1,7 +1,6 @@
 import os
 import sys
 
-# Ensure UTF-8 output encoding on Windows consoles
 if sys.platform == "win32":
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -11,11 +10,14 @@ if sys.platform == "win32":
 
 os.environ["PYTHONIOENCODING"] = "utf-8"
 
-import uvicorn
+from backend.app.main import app
 
 if __name__ == "__main__":
+    import uvicorn
+
     print("=" * 60)
     print(" [MOIL] ManganeseAI Dashboard starting...")
     print(" [URL]  http://127.0.0.1:8000")
     print("=" * 60)
-    uvicorn.run("backend.app.main:app", host="0.0.0.0", port=8000, reload=False)
+
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
